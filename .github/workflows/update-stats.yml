@@ -1,0 +1,40 @@
+# ホームに表示するデータ（GitHub の草・AtCoder のレート・ブログの最新記事）を更新する。
+# 週1回（日曜）自動で動くほか、Actions の画面の「Run workflow」ボタンでいつでも動かせる。
+name: Update stats
+
+on:
+  schedule:
+    # cron は UTC で書く。日本時間の日曜 12:17 ＝ UTC の日曜 3:17。
+    # 土曜夜の ABC のレート更新が終わったあとに動くようにしている。
+    # 0分ちょうどは混んで遅れやすいので、少しずらしている。
+    - cron: "17 3 * * 0"
+  workflow_dispatch:
+
+# 取得した data/stats.json をリポジトリにコミットするため、書き込みを許可する。
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Fetch stats
+        run: node scripts/fetch-stats.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # 草が取れないときだけ、自分で作った鍵を Settings → Secrets に STATS_TOKEN として登録する。
+          STATS_TOKEN: ${{ secrets.STATS_TOKEN }}
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/stats.json
+          # 中身が変わっていなければコミットしない（毎週同じ内容のコミットが積もらないように）。
+          git diff --cached --quiet || (git commit -m "Update stats" && git push)
