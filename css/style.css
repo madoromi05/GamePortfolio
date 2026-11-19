@@ -12,6 +12,7 @@
   --color-accent: #e8b45a;      /* 街灯の明かりの色 */
   --color-accent-ink: #1a1408;
   --color-team: #c0504d;        /* チーム制作の印 */
+  --color-hero-shade: rgb(255 255 255 / 0.035);	/* ホームの見出しの帯に重ねる斜めの面 */
 
   --font-display: "Shippori Mincho", serif;
   --font-body: "Noto Sans JP", system-ui, sans-serif;
@@ -276,19 +277,34 @@ a { color: inherit; }
 .site-header__nav a[aria-current="page"] { color: var(--color-text); }
 
 /* ---------- ホーム ---------- */
+
+/* 本文と切り離した、画面幅いっぱいの見出しの帯。うっすらした斜めの面を2枚重ねる */
+.hero {
+  display: grid;
+  place-items: center;
+  min-height: clamp(160px, 22vw, 240px);
+  padding: var(--space-l);
+  background:
+    linear-gradient(115deg, transparent 18%, var(--color-hero-shade) 18% 38%, transparent 38%),
+    linear-gradient(65deg, transparent 62%, var(--color-hero-shade) 62% 80%, transparent 80%),
+    var(--color-surface-raised);
+  border-bottom: 1px solid var(--color-line);
+}
+.hero__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+}
+
 .home {
   display: grid;
   gap: var(--space-m);
   max-width: var(--content-width);
   margin: 0 auto;
   padding: var(--space-xl) var(--space-l);
-}
-.home__title {
-  margin: 0 0 var(--space-s);
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 6vw, 4rem);	/* スマホでも1行に収まる大きさから、広い画面の大きさまで */
-  font-weight: 700;
-  line-height: 1.2;
 }
 .panel {
   position: relative;	/* パネル全体に広げたリンクの基準 */
