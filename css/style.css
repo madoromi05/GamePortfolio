@@ -284,11 +284,13 @@ a { color: inherit; }
   padding: var(--space-xl) var(--space-l);
 }
 .panel {
+  position: relative;	/* パネル全体に広げたリンクの基準 */
   min-width: 0; /* 中の SVG が横にはみ出したとき、グリッドが広がらないように */
   padding: var(--space-m) var(--space-l);
   border: 1px solid var(--color-line);
   border-radius: var(--radius);
   background: var(--color-surface);
+  transition: border-color 0.2s;
 }
 .panel__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-m); margin-bottom: var(--space-s); }
 .panel__head:last-child { margin-bottom: 0; }	/* 見出しだけのパネル（GitHub）は、上下の余白をそろえる */
@@ -303,6 +305,16 @@ a { color: inherit; }
 }
 .panel__link { color: var(--color-accent); font-size: 0.88rem; text-decoration: none; white-space: nowrap; }
 .panel__link:hover { text-decoration: underline; }
+
+/*
+ * 「〜を見る」のリンクを透明な板でパネル全体に広げ、どこを押しても開くようにする。
+ * ブログの記事のリンクと AtCoder のグラフは板より上に出す。
+ * 記事は個別に開けるように、グラフは点の説明とスマホでの横スクロールを使えるようにするため
+ */
+.panel__link::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius); }
+.panel:has(.panel__link:hover) { border-color: var(--color-accent); }
+.posts a,
+.rating { position: relative; z-index: 1; }
 .panel__empty { margin: 0; color: var(--color-text-sub); font-size: 0.9rem; }
 .sample-badge {
   padding: 0 var(--space-xs);
@@ -345,7 +357,6 @@ a { color: inherit; }
   align-items: center;
   padding: var(--space-m);
   text-decoration: none;
-  transition: border-color 0.2s;
 }
 .games-entry:hover { border-color: var(--color-accent); }
 .games-entry__thumbs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
