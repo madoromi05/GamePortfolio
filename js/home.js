@@ -1,12 +1,11 @@
 /*
  * ホーム：data/stats.json（GitHub Actions が週1回作る）を読んで、
- * GitHub の草・AtCoder のレート・ブログの最新記事を表示する。
+ * AtCoder のレート・ブログの最新記事を表示する。
  * グラフは外部ライブラリを使わず、SVG を直接組み立てて描く。
  * el() / svgEl() / renderProfile() は common.js にある。
  */
 
 const STATS_URL = "data/stats.json";
-const MONTH_LABELS = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
 
 /* ---------- 共通 ---------- */
 
@@ -23,57 +22,6 @@ function markSample(panelId, source) {
 
 function showEmpty(container, message) {
   container.replaceChildren(el("p", { class: "panel__empty", text: message }));
-}
-
-/* ---------- GitHub の草 ---------- */
-
-const CELL_SIZE = 11;
-const CELL_GAP = 3;
-const CELL_STEP = CELL_SIZE + CELL_GAP;
-const DAYS_PER_WEEK = 7;
-const CALENDAR_LEFT = 28;   // 曜日ラベルの幅
-const CALENDAR_TOP = 18;    // 月ラベルの高さ
-const WEEKDAY_LABELS = { 1: "月", 3: "水", 5: "金" };
-
-function createCalendar(weeks) {
-  const width = CALENDAR_LEFT + weeks.length * CELL_STEP;
-  const height = CALENDAR_TOP + DAYS_PER_WEEK * CELL_STEP;
-  const svg = svgEl("svg", { viewBox: `0 0 ${width} ${height}`, class: "contrib__svg", role: "img", "aria-label": "過去1年のコントリビューション" });
-
-  for (const [row, label] of Object.entries(WEEKDAY_LABELS)) {
-    svg.append(svgEl("text", { x: 0, y: CALENDAR_TOP + row * CELL_STEP + CELL_SIZE - 1, class: "chart-label", text: label }));
-  }
-
-  let previousMonth = null;
-  weeks.forEach((week, column) => {
-    const x = CALENDAR_LEFT + column * CELL_STEP;
-
-    // 週の最初の日で月が変わったら、上に月の名前を出す。
-    const month = new Date(week[0].date).getUTCMonth();
-    if (month !== previousMonth && column > 0) {
-      svg.append(svgEl("text", { x, y: CALENDAR_TOP - 6, class: "chart-label", text: MONTH_LABELS[month] }));
-    }
-    previousMonth = month;
-
-    for (const day of week) {
-      const row = new Date(day.date).getUTCDay(); // 日曜 = 0
-      svg.append(
-        svgEl("rect", { x, y: CALENDAR_TOP + row * CELL_STEP, width: CELL_SIZE, height: CELL_SIZE, rx: 2, class: `contrib__cell contrib__cell--${day.level}` }, [
-          svgEl("title", { text: `${day.date}：${day.count} 件` }),
-        ])
-      );
-    }
-  });
-  return svg;
-}
-
-function renderGitHub(github) {
-  const container = document.getElementById("github-calendar");
-  if (!github) return showEmpty(container, "データがまだありません。");
-  markSample("github", github);
-  document.getElementById("github-summary").textContent = `過去1年のコントリビューション：${github.total.toLocaleString()} 件`;
-  container.replaceChildren(createCalendar(github.weeks));
-  scrollToLatest(container);
 }
 
 /* ---------- AtCoder のレート ---------- */
@@ -207,12 +155,11 @@ async function render() {
   renderGamesEntry(WORKS);
   try {
     const stats = await loadStats();
-    renderGitHub(stats.github);
     renderAtCoder(stats.atcoder);
     renderBlog(stats.blog);
   } catch (error) {
     console.error(error);
-    for (const id of ["github-calendar", "atcoder-chart", "blog-posts"]) {
+    for (const id of ["atcoder-chart", "blog-posts"]) {
       showEmpty(document.getElementById(id), "データを読み込めませんでした。");
     }
   }

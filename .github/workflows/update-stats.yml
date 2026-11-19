@@ -1,4 +1,4 @@
-# ホームに表示するデータ（GitHub の草・AtCoder のレート・ブログの最新記事）を更新する。
+# ホームに表示するデータ（AtCoder のレート・ブログの最新記事）を更新する。
 # 週1回（日曜）自動で動くほか、Actions の画面の「Run workflow」ボタンでいつでも動かせる。
 name: Update stats
 
@@ -26,10 +26,6 @@ jobs:
 
       - name: Fetch stats
         run: node scripts/fetch-stats.mjs
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # 草が取れないときだけ、自分で作った鍵を Settings → Secrets に STATS_TOKEN として登録する。
-          STATS_TOKEN: ${{ secrets.STATS_TOKEN }}
 
       - name: Commit if changed
         run: |

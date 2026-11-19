@@ -1,10 +1,8 @@
 /*
  * GitHub Actions から週1回実行し、ホームに表示するデータを data/stats.json に保存する。
  *
- * なぜサイトから直接取りに行かないか:
- *   - GitHub の草は、公式の取得方法（GraphQL API）に鍵が要る。サイトの JS に鍵を書くと誰でも見られる。
- *   - AtCoder とはてなブログは、ブラウザからの読み込みを許可していない（CORS）。
- * サーバー側（Actions）で取ってファイルにしておけば、どちらの問題も起きない。
+ * サイトから直接取りに行かないのは、AtCoder とはてなブログがブラウザからの読み込みを許可していないため（CORS）。
+ * サーバー側（Actions）で取ってファイルにしておけば、この制限を受けない。
  *
  * 1つの取得に失敗しても、ほかの取得は続ける。失敗したものは前回のデータをそのまま残す。
  * 実行: node scripts/fetch-stats.mjs   （Node.js 20 以上。fetch が標準で使える）
@@ -20,57 +18,6 @@ const OUTPUT_PATH = "data/stats.json";
 const BLOG_POST_COUNT = 3;
 const TIME_ZONE = "Asia/Tokyo";
 const USER_AGENT = `portfolio-stats (https://github.com/${GITHUB_USER})`;
-
-// GitHub が返す草の濃さ（文字）を 0〜4 の段階に直す。
-const CONTRIBUTION_LEVELS = {
-  NONE: 0,
-  FIRST_QUARTILE: 1,
-  SECOND_QUARTILE: 2,
-  THIRD_QUARTILE: 3,
-  FOURTH_QUARTILE: 4,
-};
-
-/* ---------- GitHub：過去1年の草 ---------- */
-
-const GITHUB_QUERY = `
-  query ($login: String!) {
-    user(login: $login) {
-      contributionsCollection {
-        contributionCalendar {
-          totalContributions
-          weeks { contributionDays { date contributionCount contributionLevel } }
-        }
-      }
-    }
-  }`;
-
-async function fetchGitHub() {
-  // STATS_TOKEN（自分で作った鍵）があればそれを、無ければ Actions が最初から持っている鍵を使う。
-  const token = process.env.STATS_TOKEN || process.env.GITHUB_TOKEN;
-  if (!token) throw new Error("鍵（GITHUB_TOKEN）がありません");
-
-  const response = await fetch("https://api.github.com/graphql", {
-    method: "POST",
-    headers: { Authorization: `bearer ${token}`, "Content-Type": "application/json", "User-Agent": USER_AGENT },
-    body: JSON.stringify({ query: GITHUB_QUERY, variables: { login: GITHUB_USER } }),
-  });
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-  const json = await response.json();
-  if (json.errors) throw new Error(JSON.stringify(json.errors));
-
-  const calendar = json.data.user.contributionsCollection.contributionCalendar;
-  return {
-    total: calendar.totalContributions,
-    weeks: calendar.weeks.map((week) =>
-      week.contributionDays.map((day) => ({
-        date: day.date,
-        count: day.contributionCount,
-        level: CONTRIBUTION_LEVELS[day.contributionLevel],
-      }))
-    ),
-  };
-}
 
 /* ---------- AtCoder：レートの履歴 ---------- */
 
@@ -154,7 +101,6 @@ async function update(name, fetcher, previous) {
 async function main() {
   const previous = await readPrevious();
   const stats = {
-    github: await update("github", fetchGitHub, previous),
     atcoder: await update("atcoder", fetchAtCoder, previous),
     blog: await update("blog", fetchBlog, previous),
   };

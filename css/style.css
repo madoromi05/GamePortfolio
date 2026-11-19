@@ -291,6 +291,7 @@ a { color: inherit; }
   background: var(--color-surface);
 }
 .panel__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-m); margin-bottom: var(--space-s); }
+.panel__head:last-child { margin-bottom: 0; }	/* 見出しだけのパネル（GitHub）は、上下の余白をそろえる */
 .panel__title {
   display: flex;
   align-items: center;
@@ -302,7 +303,6 @@ a { color: inherit; }
 }
 .panel__link { color: var(--color-accent); font-size: 0.88rem; text-decoration: none; white-space: nowrap; }
 .panel__link:hover { text-decoration: underline; }
-.panel__summary { margin: 0 0 var(--space-s); color: var(--color-text-sub); font-size: 0.9rem; }
 .panel__empty { margin: 0; color: var(--color-text-sub); font-size: 0.9rem; }
 .sample-badge {
   padding: 0 var(--space-xs);
@@ -316,15 +316,6 @@ a { color: inherit; }
 
 /* グラフの文字 */
 .chart-label { fill: var(--color-text-sub); font-family: var(--font-body); font-size: 10px; }
-
-/* GitHub の草：濃さは GitHub のダークテーマと同じ緑 */
-.contrib { overflow-x: auto; }
-.contrib__svg { display: block; width: 100%; min-width: 640px; height: auto; }
-.contrib__cell--0 { fill: #161b22; }
-.contrib__cell--1 { fill: #0e4429; }
-.contrib__cell--2 { fill: #006d32; }
-.contrib__cell--3 { fill: #26a641; }
-.contrib__cell--4 { fill: #39d353; }
 
 /* AtCoder のレート */
 .stats { display: flex; flex-wrap: wrap; gap: var(--space-l); margin: 0 0 var(--space-s); }
