@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>madoromi05 | Game Programmer Portfolio</title>
+  <meta name="description" content="ゲームプログラマー志望のポートフォリオ。制作したゲーム、GitHub、AtCoder、ブログをまとめています。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-header__logo" href="index.html" data-profile="handle">madoromi05</a>
+    <nav class="site-header__nav" aria-label="サイト内リンク">
+      <a href="index.html" aria-current="page">ホーム</a>
+      <a href="games.html">制作したゲーム一覧</a>
+    </nav>
+  </header>
+
+  <main class="home">
+    <a class="panel games-entry" href="games.html">
+      <div class="games-entry__thumbs" id="games-thumbs"></div>
+      <div class="games-entry__body">
+        <h2 class="panel__title">制作したゲーム一覧</h2>
+        <p><span id="games-count"></span>のプレイ動画・コード・技術解説</p>
+        <span class="games-entry__arrow" aria-hidden="true">→</span>
+      </div>
+    </a>
+
+    <section class="panel" id="github" aria-labelledby="github-heading">
+      <div class="panel__head">
+        <h2 class="panel__title" id="github-heading">GitHub</h2>
+        <a class="panel__link" data-profile-link="githubUrl" href="#" target="_blank" rel="noopener">GitHub を見る</a>
+      </div>
+      <p class="panel__summary" id="github-summary"></p>
+      <div class="contrib" id="github-calendar"></div>
+    </section>
+
+    <section class="panel" id="atcoder" aria-labelledby="atcoder-heading">
+      <div class="panel__head">
+        <h2 class="panel__title" id="atcoder-heading">AtCoder</h2>
+        <a class="panel__link" data-profile-link="atcoderUrl" href="#" target="_blank" rel="noopener">AtCoder を見る</a>
+      </div>
+      <div id="atcoder-stats"></div>
+      <div class="rating" id="atcoder-chart"></div>
+    </section>
+
+    <section class="panel" id="blog" aria-labelledby="blog-heading">
+      <div class="panel__head">
+        <h2 class="panel__title" id="blog-heading">ブログ</h2>
+        <a class="panel__link" data-profile-link="blogUrl" href="#" target="_blank" rel="noopener">ブログを見る</a>
+      </div>
+      <ul class="posts" id="blog-posts"></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>&copy; 2026 <span data-profile="handle"></span></small>
+  </footer>
+
+  <!-- 内容（data.js）と共通の道具（common.js）を先に読み、それを使って表示（home.js）を組み立てる -->
+  <script src="js/data.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

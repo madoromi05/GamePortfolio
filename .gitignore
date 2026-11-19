@@ -1,0 +1,18 @@
+# ---- OS が勝手に作るファイル ----
+# Windows
+Thumbs.db
+desktop.ini
+# macOS
+.DS_Store
+
+# ---- エディタの個人設定 ----
+.vscode/
+.idea/
+
+# ---- Node.js ----
+# 今は外部パッケージを使っていないが、あとで npm install したときに備える
+node_modules/
+npm-debug.log*
+
+# ---- 注意：data/stats.json は除外しない ----
+# GitHub Actions が更新し、サイトが読み込むファイルなので、リポジトリに必要。
