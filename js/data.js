@@ -25,7 +25,7 @@ const WORKS = [
     title: "LAST DROP",
     genre: "3D FPS シューティングゲーム",
     production: "個人制作",
-    summary: "銃の質感、撃ったときの手応え、そしてプログラムの処理速度にこだわって作りました。描画エンジンは DirectX11 で自作しています。",
+    summary: "銃の質感、撃ったときの手応え、そしてプログラムの解決速度にこだわって作りました。描画エンジンは DirectX11 で自作しています。",
     youtubeId: "",
     githubUrl: "",
     cover: "img/lastdrop-cover.webp",
