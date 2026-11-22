@@ -197,10 +197,15 @@
         "name": "AtCoder Beginner Contest 484"
       }
     ],
-    "fetchedAt": "2026-11-19T05:46:57.812Z"
+    "fetchedAt": "2026-11-22T11:14:05.239Z"
   },
   "blog": {
     "posts": [
+      {
+        "title": "【ゲーム制作　C++】uniform initialization（統一初期化）楽だと思ったら地獄だった",
+        "url": "https://madoromi-game.hatenablog.com/entry/2026/11/20/110518",
+        "date": "2026-11-20"
+      },
       {
         "title": "【ゲーム制作　C++】namespace { }（無名名前空間）を使う意味",
         "url": "https://madoromi-game.hatenablog.com/entry/2026/11/16/101527",
@@ -210,13 +215,8 @@
         "title": "【ゲーム制作C++】指しているオブジェクトが消えても落ちない、ポインタの持ち方",
         "url": "https://madoromi-game.hatenablog.com/entry/2026/11/13/092854",
         "date": "2026-11-13"
-      },
-      {
-        "title": "【ゲーム制作C++】機械的で単純なスマートポインタの使い分け「所有 × 寿命」",
-        "url": "https://madoromi-game.hatenablog.com/entry/2026/11/09/141447",
-        "date": "2026-11-09"
       }
     ],
-    "fetchedAt": "2026-11-19T05:46:58.692Z"
+    "fetchedAt": "2026-11-22T11:14:06.493Z"
   }
 }
