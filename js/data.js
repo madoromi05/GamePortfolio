@@ -142,7 +142,7 @@ const WORKS = [
     githubUrl: "https://github.com/madoromi05/BleakCage",
     cover: "img/bleakcage-cover.webp",
     meta: [
-      ["担当", "サウンド・UI 以外のプログラム"],
+      ["担当", "サウンド・UI・敵の戦闘関連以外のプログラム"],
       ["エンジン", "Unity"],
       ["ライブラリ", "DOTween"],
       ["ツール", "Git / Sourcetree"],
