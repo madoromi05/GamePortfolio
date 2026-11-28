@@ -5,6 +5,8 @@
  */
 
 const YOUTUBE_EMBED_BASE = "https://www.youtube-nocookie.com/embed/";
+const YOUTUBE_THUMBNAIL_BASE = "https://i.ytimg.com/vi/";
+const YOUTUBE_THUMBNAIL_FILE = "hqdefault.jpg";	// どの動画にも必ずある大きさ。maxresdefault は HD の動画にしか無い
 const PRODUCTION_SOLO = "個人制作";
 
 function productionBadge(production) {
@@ -12,17 +14,23 @@ function productionBadge(production) {
   return el("span", { class: `badge badge--${kind}`, text: production });
 }
 
+/* ---------- 表紙 ---------- */
+
+function createCover(work) {
+  const frame = el("div", { class: "cover" }, [
+    el("img", { src: work.cover, alt: `${work.title} のスクリーンショット`, loading: "lazy" }),
+  ]);
+  if (!work.youtubeId) frame.append(el("span", { class: "cover__pending", text: "プレイ動画 準備中" }));
+  return frame;
+}
+
 /* ---------- 動画（クリックされるまで YouTube を読み込まない） ---------- */
 
 function createVideo(work) {
+  if (!work.youtubeId) return null;
+
   const frame = el("div", { class: "video" });
-  const cover = el("img", { src: work.cover, alt: `${work.title} のスクリーンショット`, loading: "lazy" });
-
-  if (!work.youtubeId) {
-    frame.append(cover, el("span", { class: "video__pending", text: "プレイ動画 準備中" }));
-    return frame;
-  }
-
+  const thumbnail = el("img", { src: `${YOUTUBE_THUMBNAIL_BASE}${work.youtubeId}/${YOUTUBE_THUMBNAIL_FILE}`, alt: "", loading: "lazy" });	// 何の動画かは再生ボタンの aria-label で読み上げる
   const playButton = el("button", { class: "video__play", type: "button", "aria-label": `${work.title} のプレイ動画を再生` }, [
     el("span", { class: "video__icon", "aria-hidden": "true" }),
   ]);
@@ -35,7 +43,7 @@ function createVideo(work) {
     });
     frame.replaceChildren(player);
   });
-  frame.append(cover, playButton);
+  frame.append(thumbnail, playButton);
   return frame;
 }
 
@@ -104,7 +112,10 @@ function createWorkSection(work, index) {
   ]);
 
   return el("section", { class: "work", id: work.id }, [
-    el("div", { class: "work__main" }, [createVideo(work), info]),
+    el("div", { class: "work__main" }, [
+      el("div", { class: "work__media" }, [createCover(work), createVideo(work)]),
+      info,
+    ]),
     el("div", { class: "highlights" }, work.highlights.map(createHighlight)),
     work.note ? el("p", { class: "work__note", text: `※ ${work.note}` }) : null,
     createGallery(work.gallery),

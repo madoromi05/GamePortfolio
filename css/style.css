@@ -148,8 +148,10 @@ a { color: inherit; }
 .work__genre { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); margin: var(--space-xs) 0 0; color: var(--color-text-sub); }
 .work__summary { margin: var(--space-m) 0; }
 .work__note { margin: var(--space-m) 0 0; color: var(--color-text-sub); font-size: 0.85rem; }
+.work__media { display: grid; gap: var(--space-s); }	/* 表紙の写真と動画を縦に並べる */
 
-/* ---------- 動画 ---------- */
+/* ---------- 表紙と動画（同じ 16:9 の枠に入れる） ---------- */
+.cover,
 .video {
   position: relative;
   aspect-ratio: var(--video-ratio);
@@ -158,8 +160,9 @@ a { color: inherit; }
   background: var(--color-surface);
   border: 1px solid var(--color-line);
 }
+.cover img,
 .video img,
-.video iframe { width: 100%; height: 100%; object-fit: cover; border: 0; }
+.video iframe { width: 100%; height: 100%; object-fit: cover; border: 0; }	/* 4:3 の YouTube サムネイルも上下の黒帯を切って 16:9 に収まる */
 .video__play {
   position: absolute;
   inset: 0;
@@ -190,7 +193,7 @@ a { color: inherit; }
   border-width: 12px 0 12px 20px;
   border-color: transparent transparent transparent var(--color-accent-ink);
 }
-.video__pending {
+.cover__pending {
   position: absolute;
   right: var(--space-s);
   bottom: var(--space-s);
