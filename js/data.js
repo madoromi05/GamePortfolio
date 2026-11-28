@@ -72,7 +72,7 @@ const WORKS = [
     genre: "一人称ホラーゲーム",
     production: "チーム制作",
     summary: "A* を使ったランダムマップ生成の仕組みと、それを目で確かめるための可視化コードを作りました。光と音の表現にもこだわっています。",
-    youtubeId: "",
+    youtubeId: "okQ6hXWPYLM",
     githubUrl: "https://github.com/madoromi05/2026_HorrorGame_BereavedPhoto",
     cover: "img/bereaved-cover.webp",
     meta: [
